@@ -2,10 +2,12 @@
 """ Defines BaseModel class"""
 import uuid
 from datetime import datetime
+import models
+
 
 class BaseModel:
-    """ Base model class that defines all common attributes/methods for other classes"""
-
+    """ Base model class that defines all common attributes/methods
+    for other classes"""
 
     def __init__(self, *args, **kwargs):
         """ init method for the base class"""
@@ -23,15 +25,18 @@ class BaseModel:
                 self.created_at = datetime.now()
             if "updated_at" not in kwargs:
                 self.updated_at = datetime.now()
+            models.storage.new(self)
 
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            models.storage.new(self)
 
     def save(self):
         """ Save method to update public istance attribute updated_at"""
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """ Returns a dictionary"""
@@ -41,13 +46,12 @@ class BaseModel:
         instance_dict["__class__"] = self.__class__.__name__
 
         for key, value in self.__dict__.items():
-            if key not in {'created_at', 'updated_at'} and key not in instance_dict:
+            if key not in {'created_at', 'updated_at'} and
+            key not in instance_dict:
                 instance_dict[key] = value
         return instance_dict
 
-
     def __str__(self):
         """defines classe"""
-        return ("[{}] ({}) {}".format(self.__class__.__name__, self.id,
-                                         self.__dict__))
-
+        return ("[{}] ({}) {}".format(self.__class__.__name__,
+                                      self.id, self.__dict__))
