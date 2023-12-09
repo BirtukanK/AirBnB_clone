@@ -5,7 +5,11 @@ import cmd
 
 class HBNBCommand(cmd.Cmd):
     """ command class for console"""
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
+
+    def emptyline(self):
+        """Do nothing upon receiving an empty line."""
+        pass
 
     def do_EOF(self, line):
         """ End of file"""
