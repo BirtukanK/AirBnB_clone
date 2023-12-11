@@ -8,7 +8,8 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
     """ command class for console"""
     prompt = "(hbnb) "
-    __classes = {"BaseModel"}
+    __classes = {"BaseModel",
+                 "User"}
 
     def emptyline(self):
         """Do nothing upon receiving an empty line."""
