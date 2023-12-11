@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 """defines consol file"""
 import cmd
+from models.base_model import BaseModel
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """ command class for console"""
     prompt = "(hbnb) "
+    __classes = {"BaseModel"}
 
     def emptyline(self):
         """Do nothing upon receiving an empty line."""
@@ -29,6 +32,65 @@ class HBNBCommand(cmd.Cmd):
         """ Help for quit"""
         print ("Help for quit")
         print ("Used for exiting command")
+
+    def do_create(self, line):
+        """ Creates new instance of a class, saves it to the JSON file
+        Syntax: create <class_name>"""
+        args = line.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        else:
+            print(eval(args[0])().id)
+            storage.save()
+
+    def do_show(self, line):
+        """ Prints the string representation of an instance"""
+        objdict = storage.all()
+        args = line.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in objdict:
+            print("** no instance found **")
+        else:
+            print(objdict["{}.{}".format(args[0], args[1])])
+
+    def do_destroy(self, line):
+        """ Deletes an istance based on the class name and Id
+        Usage: destroy <class name> id"""
+        objdict = storage.all()
+        args = line.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in objdict:
+            print("** no instance found **")
+        else:
+            del objdict["{}.{}".format(args[0], args[1])]
+            storage.save()
+
+    def do_all(self, line):
+        """ Prints all string representation of al instances
+        Usage: all <class name> or all"""
+        args = line.split()
+        if len(args) > 0 and args[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        else:
+            objl = []
+            for obj in storage.all().values():
+                if len(args) > 0 and args[0] == obj.__class__.__name__:
+                    objs.append(obj.__str__())
+                elif len(args) == 0:
+                    objl.append(obj.__str__())
+            print(objl)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
