@@ -20,8 +20,8 @@ class HBNBCommand(cmd.Cmd):
 
     def help_EOF(self):
         """ Help for EOF"""
-        print ("Help for EOF")
-        print ("Used for exiting command")
+        print("Help for EOF")
+        print("Used for exiting command")
 
     def do_quit(self, line):
         """ Quit command"""
@@ -30,8 +30,8 @@ class HBNBCommand(cmd.Cmd):
 
     def help_quit(self):
         """ Help for quit"""
-        print ("Help for quit")
-        print ("Used for exiting command")
+        print("Help for quit")
+        print("Used for exiting command")
 
     def do_create(self, line):
         """ Creates new instance of a class, saves it to the JSON file
@@ -121,12 +121,13 @@ class HBNBCommand(cmd.Cmd):
                 obj = objdict["{}.{}".format(args[0], args[1])]
                 for k, v in eval(args[2]).items():
                     if (k in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[k]) in {str, int, float}):
+                       type(obj.__class__.__dict__[k]) in {str, int, float}):
                         valtype = type(obj.__class__.__dict__[k])
                         obj.__dict__[k] = valtype(v)
             else:
                 obj.__dict__[k] = v
             storage.save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
