@@ -4,13 +4,23 @@ import cmd
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """ command class for console"""
     prompt = "(hbnb) "
     __classes = {"BaseModel",
-                 "User"}
+                 "User",
+                 "Review",
+                 "Amenity",
+                 "City",
+                 "State",
+                 "Place"}
 
     def emptyline(self):
         """Do nothing upon receiving an empty line."""
