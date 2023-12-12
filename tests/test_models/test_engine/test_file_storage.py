@@ -13,6 +13,20 @@ class TestFileStorage(unittest.TestCase):
     def setUp(self):
         """creates instance of Filestorage for testing"""
         self.file_storage = FileStorage()
+        obj = FileStorage()
+
+    def test_file_path(self):
+        """ tests file path"""
+        obj = FileStorage()
+        file_path = obj.__file_path
+        self.assertTrue(isinstance(file_path, (dict, list)))
+
+    def test_objects(self):
+        """ tests objects"""
+        obj = FileStorage()
+        obj = FileStorage()
+        result = obj.__objects
+        self.assertIsInstance(result, dict)
 
     def test_all(self):
         """ Tests all method"""
@@ -26,12 +40,18 @@ class TestFileStorage(unittest.TestCase):
         result = self.file_storage.all()
         self.assertIn("User.{}".format(user.id), result)
 
-    def test_save_and_reload(self):
-        """ Tests save and reload methods"""
+    def test_save(self):
+        """ Tests save methods"""
         user = User()
         self.file_storage.new(user)
         self.file_storage.save()
+        result = self.file_storage.all()
+        self.assertIn("User.{}".format(user.id), result)
 
+    def test_reload(self):
+        user = User()
+        self.file_storage.new(user)
+        self.file_storage.save()
         new_file_storage = FileStorage()
         new_file_storage.reload()
 
